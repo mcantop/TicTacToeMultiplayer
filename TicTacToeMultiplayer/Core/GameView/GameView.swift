@@ -12,15 +12,24 @@ struct GameView: View {
     @EnvironmentObject var viewModel: GameViewModel
     
     var body: some View {
-        VStack { 
+        VStack {
             GameHeaderView()
             
             GameGridView()
             
             TTTButton(type: .quit) {
+                viewModel.quitGame()
                 dismiss()
             }
             .frame(maxHeight: .infinity, alignment: .bottom)
+        }
+        .onAppear {
+            viewModel.getTheGame()
+        }
+        .onChange(of: viewModel.game) { game in
+            if game == nil {
+                dismiss()
+            }
         }
     }
 }
@@ -64,7 +73,7 @@ struct GameGridView: View {
                         RoundedRectangle(cornerRadius: 20)
                             .fill(.tint)
                         
-                        Image(systemName: viewModel.game.moves[index]?.indicator ?? "")
+                        Image(systemName: viewModel.game?.moves[index]?.indicator ?? "")
                             .resizable()
                             .scaledToFit()
                             .foregroundColor(.white)

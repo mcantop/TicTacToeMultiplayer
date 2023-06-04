@@ -6,19 +6,13 @@
 //
 
 import SwiftUI
+import Combine
+
 
 final class GameViewModel: ObservableObject {
     @AppStorage("user") private var userData: Data?
     
-    @Published var game = Game(
-        id: UUID().uuidString,
-        playerOneId: "playerOne",
-        playerTwoId: "playerTwo",
-        winnerId: "",
-        rematchPlayerId: [],
-        blockMoveForPlayerId: "playerTwo",
-        moves: Array(repeating: nil, count: 9)
-    )
+    @Published var game: Game?
     
     @Published var currentUser: User?
     
@@ -32,12 +26,14 @@ final class GameViewModel: ObservableObject {
     ]
     
     private var playedMoves: [Move] {
-        return game.moves.compactMap { $0 }
+        return game?.moves.compactMap { $0 } ?? []
     }
     
     private var didDraw: Bool {
         return playedMoves.count == 9
     }
+    
+    private var cancellables: Set<AnyCancellable> = []
     
     init() {
         getLocalUser()
@@ -45,36 +41,59 @@ final class GameViewModel: ObservableObject {
         if currentUser == nil {
             createLocalUser()
         }
+        
+        
     }
 }
 
 // MARK: - Public API
 extension GameViewModel {
+    func getTheGame() {
+        guard let userId = currentUser?.id else {
+            print("[DEBUG] Current user id not found")
+            return
+        }
+        
+        GameService.shared.startGame(userId: userId)
+        GameService.shared.$game
+            .assign(to:\.game, on: self)
+            .store(in: &cancellables)
+    }
+    
     func processPlayerMove(gridIndex: Int) {
+        guard game != nil else {
+            print("[DEBUG] Game in GameViewModel is nil")
+            return
+        }
         /// If grid is not already marked, continue move, otherwise return
         guard !isGridMarked(index: gridIndex) else { return }
-        game.moves[gridIndex] = Move(isPlayerOne: true, boardIndex: gridIndex)
-        
+        game?.moves[gridIndex] = Move(isPlayerOne: true, boardIndex: gridIndex)
+
         /// Block the move
-        game.blockMoveForPlayerId = "playerTwo"
-        
+        game?.blockMoveForPlayerId = "playerTwo"
+
         /// Check for win
         if didWin(playerOne: true) {
             print("[DEBUG] Win")
             return
         }
-        
+
         if didDraw {
             print("[DEBUG] Draw")
             return
         }
+    }
+    
+    func quitGame() {
+        GameService.shared.quitGame()
     }
 }
 
 // MARK: - Private API
 private extension GameViewModel {
     func isGridMarked(index: Int) -> Bool {
-        return game.moves.contains { $0?.boardIndex == index }
+        guard let moves = game?.moves else { return false }
+        return moves.contains { $0?.boardIndex == index }
     }
     
     func didWin(playerOne: Bool) -> Bool {

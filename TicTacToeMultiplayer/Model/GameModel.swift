@@ -7,10 +7,14 @@
 
 import Foundation
 
-struct Game: Codable {
+struct Game: Codable, Equatable {
+    static func == (lhs: Game, rhs: Game) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     let id: String
     let playerOneId: String
-    let playerTwoId: String
+    var playerTwoId: String
     let winnerId: String
     let rematchPlayerId: [String]
     var blockMoveForPlayerId: String

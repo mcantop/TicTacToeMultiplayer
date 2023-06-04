@@ -21,6 +21,7 @@
 		525EE9A02A2CB7E900C080D6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 525EE99F2A2CB7E900C080D6 /* GoogleService-Info.plist */; };
 		525EE9A32A2CB84300C080D6 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 525EE9A22A2CB84300C080D6 /* FirebaseFirestore */; };
 		525EE9A52A2CB84300C080D6 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 525EE9A42A2CB84300C080D6 /* FirebaseFirestoreSwift */; };
+		525EE9AA2A2CBBE100C080D6 /* GameService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525EE9A92A2CBBE100C080D6 /* GameService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		525EE99B2A2C53F600C080D6 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		525EE99D2A2C7E6500C080D6 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		525EE99F2A2CB7E900C080D6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		525EE9A92A2CBBE100C080D6 /* GameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 				525EE9982A2C527600C080D6 /* Model */,
 				525EE98A2A2C3F5800C080D6 /* Components */,
 				525EE9802A2C3AD000C080D6 /* Preview Content */,
+				525EE9A92A2CBBE100C080D6 /* GameService.swift */,
 			);
 			path = TicTacToeMultiplayer;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				525EE99A2A2C528B00C080D6 /* MoveModel.swift in Sources */,
+				525EE9AA2A2CBBE100C080D6 /* GameService.swift in Sources */,
 				525EE9972A2C4F4500C080D6 /* GameViewModel.swift in Sources */,
 				525EE97D2A2C3ACF00C080D6 /* HomeView.swift in Sources */,
 				525EE9892A2C3EC000C080D6 /* GameView.swift in Sources */,
