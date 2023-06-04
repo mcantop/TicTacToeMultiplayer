@@ -12,6 +12,8 @@
 		525EE97F2A2C3AD000C080D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 525EE97E2A2C3AD000C080D6 /* Assets.xcassets */; };
 		525EE9822A2C3AD000C080D6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 525EE9812A2C3AD000C080D6 /* Preview Assets.xcassets */; };
 		525EE9892A2C3EC000C080D6 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525EE9882A2C3EC000C080D6 /* GameView.swift */; };
+		525EE98C2A2C3F7D00C080D6 /* TTTButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525EE98B2A2C3F7D00C080D6 /* TTTButton.swift */; };
+		525EE98E2A2C419C00C080D6 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525EE98D2A2C419C00C080D6 /* HomeViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +23,8 @@
 		525EE97E2A2C3AD000C080D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		525EE9812A2C3AD000C080D6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		525EE9882A2C3EC000C080D6 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		525EE98B2A2C3F7D00C080D6 /* TTTButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TTTButton.swift; sourceTree = "<group>"; };
+		525EE98D2A2C419C00C080D6 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,11 +57,11 @@
 		525EE9792A2C3ACF00C080D6 /* TicTacToeMultiplayer */ = {
 			isa = PBXGroup;
 			children = (
-				525EE97A2A2C3ACF00C080D6 /* TicTacToeMultiplayerApp.swift */,
-				525EE97C2A2C3ACF00C080D6 /* HomeView.swift */,
-				525EE9882A2C3EC000C080D6 /* GameView.swift */,
-				525EE97E2A2C3AD000C080D6 /* Assets.xcassets */,
+				525EE98F2A2C424300C080D6 /* App */,
+				525EE9902A2C424900C080D6 /* Core */,
+				525EE98A2A2C3F5800C080D6 /* Components */,
 				525EE9802A2C3AD000C080D6 /* Preview Content */,
+				525EE97E2A2C3AD000C080D6 /* Assets.xcassets */,
 			);
 			path = TicTacToeMultiplayer;
 			sourceTree = "<group>";
@@ -68,6 +72,48 @@
 				525EE9812A2C3AD000C080D6 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		525EE98A2A2C3F5800C080D6 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				525EE98B2A2C3F7D00C080D6 /* TTTButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		525EE98F2A2C424300C080D6 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				525EE97A2A2C3ACF00C080D6 /* TicTacToeMultiplayerApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		525EE9902A2C424900C080D6 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				525EE9912A2C425600C080D6 /* HomeView */,
+				525EE9922A2C425C00C080D6 /* GameView */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		525EE9912A2C425600C080D6 /* HomeView */ = {
+			isa = PBXGroup;
+			children = (
+				525EE98D2A2C419C00C080D6 /* HomeViewModel.swift */,
+				525EE97C2A2C3ACF00C080D6 /* HomeView.swift */,
+			);
+			path = HomeView;
+			sourceTree = "<group>";
+		};
+		525EE9922A2C425C00C080D6 /* GameView */ = {
+			isa = PBXGroup;
+			children = (
+				525EE9882A2C3EC000C080D6 /* GameView.swift */,
+			);
+			path = GameView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,6 +188,8 @@
 			files = (
 				525EE97D2A2C3ACF00C080D6 /* HomeView.swift in Sources */,
 				525EE9892A2C3EC000C080D6 /* GameView.swift in Sources */,
+				525EE98C2A2C3F7D00C080D6 /* TTTButton.swift in Sources */,
+				525EE98E2A2C419C00C080D6 /* HomeViewModel.swift in Sources */,
 				525EE97B2A2C3ACF00C080D6 /* TicTacToeMultiplayerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
