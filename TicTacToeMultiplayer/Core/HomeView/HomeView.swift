@@ -22,6 +22,7 @@ struct HomeView: View {
         }
         .fullScreenCover(isPresented: $viewModel.presentingGameView) {
             GameView()
+                .environmentObject(GameViewModel())
         }
     }
 }

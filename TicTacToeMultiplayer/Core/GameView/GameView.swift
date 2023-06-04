@@ -9,9 +9,10 @@ import SwiftUI
 
 struct GameView: View {
     @Environment (\.dismiss) var dismiss
+    @EnvironmentObject var viewModel: GameViewModel
     
     var body: some View {
-        VStack {
+        VStack { 
             GameHeaderView()
             
             GameGridView()
@@ -27,6 +28,7 @@ struct GameView: View {
 struct GameView_Previews: PreviewProvider {
     static var previews: some View {
         GameView()
+            .environmentObject(GameViewModel())
     }
 }
 
@@ -50,21 +52,19 @@ struct GameHeaderView: View {
 
 // MARK: GameGridView
 struct GameGridView: View {
-    private let columns: [GridItem] = [
-        GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()),
-    ]
-    
+    @EnvironmentObject var viewModel: GameViewModel
+
     var body: some View {
-        LazyVGrid(columns: columns) {
+        LazyVGrid(columns: viewModel.columns) {
             ForEach(0..<9) { index in
                 Button {
-                    print("[DEBUG] Tapped on index \(index)")
+                    viewModel.processPlayerMove(gridIndex: index)
                 } label: {
                     ZStack {
-                        Circle()
+                        RoundedRectangle(cornerRadius: 20)
                             .fill(.tint)
                         
-                        Image(systemName: "apple.logo")
+                        Image(systemName: viewModel.game.moves[index]?.indicator ?? "")
                             .resizable()
                             .scaledToFit()
                             .foregroundColor(.white)
