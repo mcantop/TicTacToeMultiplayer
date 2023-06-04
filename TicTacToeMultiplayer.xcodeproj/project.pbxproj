@@ -102,8 +102,8 @@
 		525EE9912A2C425600C080D6 /* HomeView */ = {
 			isa = PBXGroup;
 			children = (
-				525EE98D2A2C419C00C080D6 /* HomeViewModel.swift */,
 				525EE97C2A2C3ACF00C080D6 /* HomeView.swift */,
+				525EE98D2A2C419C00C080D6 /* HomeViewModel.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";

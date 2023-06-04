@@ -50,7 +50,7 @@ struct TTTButton: View {
                 .frame(maxWidth: .infinity)
                 .background(background)
                 .clipShape(Capsule())
-                .padding(64)
+                .padding(.horizontal, 64)
         }
 
     }
