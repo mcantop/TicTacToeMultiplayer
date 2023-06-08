@@ -11,10 +11,13 @@ import Combine
 
 final class GameViewModel: ObservableObject {
     @AppStorage("user") private var userData: Data?
-    
-    @Published var game: Game?
-    
+    @Published var game: Game? {
+        didSet {
+                checkIsGameOver()
+        }
+    }
     @Published var currentUser: User?
+    @Published var alert: AlertModel?
     
     let columns: [GridItem] = [.init(), .init(), .init()]
     
@@ -29,8 +32,26 @@ final class GameViewModel: ObservableObject {
         return game?.moves.compactMap { $0 } ?? []
     }
     
-    private var didDraw: Bool {
+     var didWin: Bool {
+        /// Filter moves for a player
+        let playerMoves = playedMoves.filter { $0.isPlayerOne == isPlayerOne }
+        /// Get a set of player moves as an index
+        let playerPositons = Set(playerMoves.map { $0.boardIndex })
+        
+        for pattern in winPatterns where pattern.isSubset(of: playerPositons) {
+            return true
+        }
+        
+        return false
+    }
+    
+     var didDraw: Bool {
         return playedMoves.count == 9
+    }
+    
+    private var isPlayerOne: Bool {
+        guard let game else { return false }
+        return game.playerOneId == currentUser?.id
     }
     
     private var cancellables: Set<AnyCancellable> = []
@@ -41,8 +62,6 @@ final class GameViewModel: ObservableObject {
         if currentUser == nil {
             createLocalUser()
         }
-        
-        
     }
 }
 
@@ -61,32 +80,80 @@ extension GameViewModel {
     }
     
     func processPlayerMove(gridIndex: Int) {
-        guard game != nil else {
-            print("[DEBUG] Game in GameViewModel is nil")
+        guard game != nil, let currentUser else {
+            print("[DEBUG] Game or currentUser is nil")
             return
         }
         /// If grid is not already marked, continue move, otherwise return
         guard !isGridMarked(index: gridIndex) else { return }
-        game?.moves[gridIndex] = Move(isPlayerOne: true, boardIndex: gridIndex)
-
+        game?.moves[gridIndex] = Move(isPlayerOne: isPlayerOne, boardIndex: gridIndex)
+        
         /// Block the move
-        game?.blockMoveForPlayerId = "playerTwo"
-
-        /// Check for win
-        if didWin(playerOne: true) {
-            print("[DEBUG] Win")
+        game?.blockMoveForPlayerId = currentUser.id
+        
+        GameService.shared.updateGameOnline(game: game)
+        
+        if didWin {
+            game?.winnerId = currentUser.id
+            GameService.shared.updateGameOnline(game: game)
             return
         }
-
+        
         if didDraw {
-            print("[DEBUG] Draw")
+            game?.winnerId = "0"
+            GameService.shared.updateGameOnline(game: game)
             return
+        }
+    }
+    
+    func checkGameBoardStatus() -> Bool {
+        guard let game else { return false }
+        return game.blockMoveForPlayerId == currentUser?.id
+    }
+    
+    func checkIsGameOver() {
+        alert = nil
+        
+        guard let game else { return }
+                
+        if game.winnerId == "0" {
+            alert = AlertModel(type: .draw)
+        } else if game.winnerId != "" {
+            if game.winnerId == currentUser?.id {
+                alert = AlertModel(type: .win)
+            } else {
+                alert = AlertModel(type: .lose)
+            }
+        }
+        
+        if game == nil {
+            print("[DEBUG] GAME NIL")
         }
     }
     
     func quitGame() {
         GameService.shared.quitGame()
     }
+    
+    func resetGame() {
+        guard game != nil else {
+            alert = AlertModel(type: .quit)
+            return
+        }
+                
+        if game?.rematchPlayerId.count == 1 {
+            game?.moves = Array(repeating: nil, count: 9)
+            game?.winnerId = ""
+            game?.blockMoveForPlayerId = game?.playerTwoId ?? ""
+        } else if game?.rematchPlayerId.count == 2 {
+            game?.rematchPlayerId = []
+        }
+        
+        game?.rematchPlayerId.append(currentUser?.id ?? "")
+                
+        GameService.shared.updateGameOnline(game: game)
+    }
+
 }
 
 // MARK: - Private API
@@ -94,19 +161,6 @@ private extension GameViewModel {
     func isGridMarked(index: Int) -> Bool {
         guard let moves = game?.moves else { return false }
         return moves.contains { $0?.boardIndex == index }
-    }
-    
-    func didWin(playerOne: Bool) -> Bool {
-        /// Filter moves for a player
-        let playerMoves = playedMoves.filter { $0.isPlayerOne == playerOne }
-        /// Get a set of player moves as an index
-        let playerPositons = Set(playerMoves.map { $0.boardIndex })
-        
-        for pattern in winPatterns where pattern.isSubset(of: playerPositons) {
-            return true
-        }
-        
-        return false
     }
     
     func createLocalUser() {

@@ -10,12 +10,15 @@ import SwiftUI
 struct GameView: View {
     @Environment (\.dismiss) var dismiss
     @EnvironmentObject var viewModel: GameViewModel
+    @State private var presentingAlert = false
     
     var body: some View {
         VStack {
             GameHeaderView()
             
             GameGridView()
+                .disabled(viewModel.checkGameBoardStatus())
+                .animation(.spring(), value: viewModel.checkGameBoardStatus())
             
             TTTButton(type: .quit) {
                 viewModel.quitGame()
@@ -26,10 +29,30 @@ struct GameView: View {
         .onAppear {
             viewModel.getTheGame()
         }
+        .onChange(of: viewModel.alert) { alert in
+            print("[DEBUG] Chaged alert \(alert)")
+            presentingAlert = false
+            presentingAlert = alert != nil
+        }
         .onChange(of: viewModel.game) { game in
             if game == nil {
+                viewModel.alert = AlertModel(type: .quit)
+            }
+        }
+        .alert(
+            viewModel.alert?.type.title ?? "",
+            isPresented: $presentingAlert
+        ) {
+            Button("Quit", role: .destructive) {
+                viewModel.quitGame()
                 dismiss()
             }
+            
+            Button("Rematch", role: .cancel) {
+                viewModel.resetGame()
+            }
+        } message: {
+            Text(viewModel.alert?.type.message ?? "")
         }
     }
 }
@@ -45,16 +68,26 @@ struct GameView_Previews: PreviewProvider {
 
 // MARK: GameHeaderView
 struct GameHeaderView: View {
+    @EnvironmentObject var viewModel: GameViewModel
+
     var body: some View {
         VStack {
-            Text("Waiting for a player to join...")
-                .font(.footnote)
-                .foregroundColor(.secondary)
-                .frame(maxHeight: .infinity, alignment: .top)
-            
-            ProgressView()
-                .scaleEffect(1.75)
-                .frame(maxHeight: .infinity, alignment: .top)
+            if viewModel.game?.playerTwoId != "" {
+                Text("Game has started!")
+                    .font(.footnote)
+                    .foregroundColor(.green)
+                    .frame(maxHeight: .infinity, alignment: .top)
+            } else {
+                Text("Waiting for a player to join...")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                    .frame(maxHeight: .infinity, alignment: .top)
+                
+                
+                ProgressView()
+                    .scaleEffect(1.75)
+                    .frame(maxHeight: .infinity, alignment: .top)
+            }
         }
     }
 }

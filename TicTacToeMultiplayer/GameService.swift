@@ -10,10 +10,9 @@ import Firebase
 import FirebaseFirestoreSwift
 
 final class GameService: ObservableObject {
-    static let shared = GameService()
-    
     @Published var game: Game?
-    
+
+    static let shared = GameService()
     private let firebaseReference = Firestore.firestore().collection("game")
 }
 
@@ -26,7 +25,7 @@ extension GameService {
             .whereField("playerTwoId", isEqualTo: "")
             .whereField("playerOneId", isNotEqualTo: userId)
             .getDocuments { snapshot, error in
-                if let error {
+                if error != nil {
                     print("[DEBUG] Error while starting a game: it probably does not exist. Creating a new game.")
                     /// Create new game
                     self.createGameObject(userId: userId)
@@ -39,7 +38,7 @@ extension GameService {
                         self.game = decodedGame
                         self.game?.playerTwoId = userId
                         self.game?.blockMoveForPlayerId = userId
-                        self.sendGameOnline()
+                        self.updateGameOnline(game: self.game)
                         self.listenForGameChanges()
                     } catch {
                         print("[DEBUG] Error while decoding game object: \(error.localizedDescription)")
@@ -63,11 +62,11 @@ extension GameService {
             moves: Array(repeating: nil, count: 9)
         )
         
-        sendGameOnline()
+        updateGameOnline(game: game)
         listenForGameChanges()
     }
     
-    func sendGameOnline() {
+    func updateGameOnline(game: Game?) {
         do {
             guard let game else { fatalError("[DEBUG] Game object shouldn't be nil!!!") }
             try firebaseReference.document(game.id).setData(from: game)
@@ -77,7 +76,24 @@ extension GameService {
     }
     
     func listenForGameChanges() {
-        
+        guard let gameId = game?.id else { fatalError("[DEBUG] Game object shouldn't be nil!!!") }
+        firebaseReference.document(gameId).addSnapshotListener { snapshot, error in
+            if let error {
+                print("[DEBUG] Error while listening for game changes: \(error.localizedDescription)")
+                return
+            }
+            
+            if let snapshot {
+                self.game = try? snapshot.data(as: Game.self)
+//                do {
+//                    self.game = try snapshot.data(as: Game.self)
+//                    print("[DEBUG] Listening for snapshot change")
+//                } catch {
+//                    self.game = nil
+//                    print("[DEBUG] Error while decoding game changes snapshot: \(error.localizedDescription)")
+//                }
+            }
+        }
     }
     
     func quitGame() {
@@ -88,7 +104,7 @@ extension GameService {
         
         if let gameId = game?.id {
             firebaseReference.document(gameId).delete()
-            game = nil
+//            game = nil
             print("[DEBUG] Deleting game from Firebase")
         }
     }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		520604342A2D583B0008F3AA /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520604332A2D583B0008F3AA /* AlertModel.swift */; };
 		525EE97B2A2C3ACF00C080D6 /* TicTacToeMultiplayerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525EE97A2A2C3ACF00C080D6 /* TicTacToeMultiplayerApp.swift */; };
 		525EE97D2A2C3ACF00C080D6 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525EE97C2A2C3ACF00C080D6 /* HomeView.swift */; };
 		525EE97F2A2C3AD000C080D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 525EE97E2A2C3AD000C080D6 /* Assets.xcassets */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		520604332A2D583B0008F3AA /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		525EE9772A2C3ACF00C080D6 /* TicTacToeMultiplayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicTacToeMultiplayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		525EE97A2A2C3ACF00C080D6 /* TicTacToeMultiplayerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicTacToeMultiplayerApp.swift; sourceTree = "<group>"; };
 		525EE97C2A2C3ACF00C080D6 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				525EE9992A2C528B00C080D6 /* MoveModel.swift */,
 				525EE99B2A2C53F600C080D6 /* GameModel.swift */,
 				525EE99D2A2C7E6500C080D6 /* UserModel.swift */,
+				520604332A2D583B0008F3AA /* AlertModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -233,6 +236,7 @@
 				525EE99C2A2C53F600C080D6 /* GameModel.swift in Sources */,
 				525EE98E2A2C419C00C080D6 /* HomeViewModel.swift in Sources */,
 				525EE99E2A2C7E6500C080D6 /* UserModel.swift in Sources */,
+				520604342A2D583B0008F3AA /* AlertModel.swift in Sources */,
 				525EE97B2A2C3ACF00C080D6 /* TicTacToeMultiplayerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

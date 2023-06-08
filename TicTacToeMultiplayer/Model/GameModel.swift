@@ -15,8 +15,8 @@ struct Game: Codable, Equatable {
     let id: String
     let playerOneId: String
     var playerTwoId: String
-    let winnerId: String
-    let rematchPlayerId: [String]
+    var winnerId: String
+    var rematchPlayerId: [String]
     var blockMoveForPlayerId: String
     
     var moves: [Move?]
